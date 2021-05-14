@@ -43,10 +43,10 @@ int main(int argc, char* argv[])
 	char esp_buff[0x10]={0};
 	int iCr3=0;
 
-	DWORD tss[26] = {
-		0x00000000,//link
-			0x00000000,//esp0
-			0x00000000,//ss0
+	DWORD TSS[26] = {
+		        0x00000028,//offset 0, storing the previous TR descriptor
+			0x00000000,//offset 4, storing new esp0
+			0x00000000,//offset 8, storing new ss0
 			0x00000000,//esp1
 			0x00000000,//ss1
 			0x00000000,//esp2
@@ -80,7 +80,6 @@ int main(int argc, char* argv[])
 	*(WORD*)&buffer[4] = 0x48;
 	
 	_asm {
-   		str tss 
 			
 		int 0 
 	}
